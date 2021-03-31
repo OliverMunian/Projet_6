@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require ('body-parser');
 const mongoose = require('mongoose');
 const path = require('path')
+var helmet = require('helmet');
 
-const stuffRoutes = require('./Routes/Stuff');
+
+const saucesRoutes = require('./Routes/Sauces');
 const userRoutes = require('./Routes/User');
 
 mongoose.connect('mongodb+srv://BVN3:tricky94@cluster0.deehr.mongodb.net/Userprojet6?retryWrites=true&w=majority',
@@ -23,11 +25,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(helmet());
+app.disable('x-powered-by');
+
 app.use(bodyParser.json());
 
-app.use('/api/sauces', stuffRoutes);
+app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
-
 app.use('/Images', express.static(path.join(__dirname, 'images')));
 
 app.get('/test', (req, res, next)=>{
